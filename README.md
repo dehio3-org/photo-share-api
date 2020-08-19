@@ -123,3 +123,14 @@ query listPhotos {
   }
 }
 ```
+
+# 5.2.5
+## Query
+```graphql
+query listPhotos {
+  allPhotos {
+    name
+    created
+  }
+}
+```
