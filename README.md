@@ -44,3 +44,32 @@ mutation newPhoto($name: String!, $description: String){
   	"description": "A sample photos for our dataset"
 }
 ```
+
+# 5.2.2
+## Query
+```graphql
+mutation newPhoto($name: String!, $description: String){
+  postPhoto(name: $name, description: $description) {
+    id
+    name
+    description
+  }
+}
+```
+```
+{
+    "name": "sample photo A",
+  	"description": "A sample photos for our dataset"
+}
+```
+## Query
+```graphql
+query listPhotos {
+  allPhotos {
+    id
+    name
+    description
+    url
+  }
+}
+```

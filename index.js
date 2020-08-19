@@ -3,27 +3,46 @@ const { ApolloServer } = require(`apollo-server`)
 
 // 写真を格納するための配列
 var photos = []
+// ユニークIDをインクリメントするための変数
+var _id = 0
 
 const typeDefs = `
+	type Photo {
+		id: ID!
+		url: String!
+		name: String!
+		description: String
+	}
+
 	type Query {
 		totalPhotos: Int!
+		allPhotos: [Photo!]!
 	}
 
 	type Mutation {
-		postPhoto(name: String! description: String): Boolean!
+		postPhoto(name: String! description: String): Photo!
 	}
 `
 
 const resolvers = {
 	Query: {
-		totalPhotos: () => photos.length
+		totalPhotos: () => photos.length,
+		allPhotos: () => photos
 	},
 
 	Mutation: {
 		postPhoto(parent, args) {
-			photos.push(args)
-			return true
+			var newPhoto = {
+				id: _id++,
+				...args
+			}
+			photos.push(newPhoto)
+			return newPhoto
 		}
+	},
+
+	Photo: {
+		url: parent => `http://yoursite.com/img/${parent.id}.jpg`
 	}
 }
 
