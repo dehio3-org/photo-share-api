@@ -32,6 +32,13 @@ var users = [
 	{ "githubLogin": "gPlake", "name": "Glen Plake" },
 	{ "githubLogin": "sSchmidt", "name": "Scot Schmidt" }
 ]
+// タグサンプル
+var tags = [
+	{ "PhotoID": "1", "userID": "gPlake" },
+	{ "PhotoID": "2", "userID": "sSchmidt" },
+	{ "PhotoID": "2", "userID": "mHattrup" },
+	{ "PhotoID": "2", "userID": "gPlake" },
+]
 
 const typeDefs = `
 	type User {
@@ -39,6 +46,7 @@ const typeDefs = `
 		name: String
 		avatar: String
 		postedPhotos: [Photo!]!
+		inPhotos: [Photo!]!
 	}
 
 	enum PhotoCategory {
@@ -56,6 +64,7 @@ const typeDefs = `
 		description: String
 		category: PhotoCategory!
 		postedBy: User!
+		taggedUsers: [User!]!
 	}
 
 	input PostPhotoInput {
@@ -95,12 +104,20 @@ const resolvers = {
 		url: parent => `http://yoursite.com/img/${parent.id}.jpg`,
 		postedBy: parent => {
 			return users.find(u => u.githubLogin === parent.githubUser)
-		}
+		},
+		taggedUsers: parent => tags
+			.filter(tag => tag.PhotoID === parent.id)
+			.map(tag => tag.userID)
+			.map(userID => users.find(u => u.githubLogin === userID))
 	},
 	User: {
 		postedPhotos: parent => {
 			return photos.filter(p => p.githubUser === parent.githubLogin)
-		}
+		},
+		inPhotos: parent => tags
+			.filter(tag => tag.userID === parent.id)
+			.map(tag => tag.PhotoID)
+			.map(photoID => photos.find(p => p.id === photoID))
 	}
 }
 

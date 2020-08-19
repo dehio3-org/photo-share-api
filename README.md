@@ -109,3 +109,17 @@ query photos {
   }
 }
 ```
+
+# 5.2.4.2
+## Query
+```graphql
+query listPhotos {
+  allPhotos {
+		name
+    url
+    taggedUsers {
+      name
+    }
+  }
+}
+```
