@@ -24,3 +24,23 @@ npm install apollo-server graphql nodemon
 [nodemon] starting `node index.js`
 GraphQL Service running on http://localhost:4000/
 ```
+
+# 5.2.1
+## Query
+```graphql
+mutation newPhoto{
+  postPhoto(name: "sample photo")
+}
+```
+## Query
+```graphql
+mutation newPhoto($name: String!, $description: String){
+  postPhoto(name: $name, description: $description)
+}
+```
+```
+{
+    "name": "sample photo A",
+  	"description": "A sample photos for our dataset"
+}
+```
