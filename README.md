@@ -95,3 +95,17 @@ mutation newPhoto($input: PostPhotoInput!){
   }
 }
 ```
+
+# 5.2.4.1
+## Query
+```graphql
+query photos {
+  allPhotos {
+		name
+    url
+    postedBy {
+      name
+    }
+  }
+}
+```
